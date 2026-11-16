@@ -1,23 +1,23 @@
 <script setup>
-import { ref } from 'vue'
+import { ref } from "vue";
 
 // book = the book being edited, or null when creating a new one
 const props = defineProps({
   book: { type: Object, default: null },
-})
+});
 
-const emit = defineEmits(['save', 'cancel'])
+const emit = defineEmits(['save', 'cancel']);
 
-const title = ref(props.book ? props.book.title : '')
+const title = ref(props.book ? props.book.title : "");
 
 function submit() {
-  emit('save', title.value.trim())
+  emit("save", title.value.trim());
 }
 </script>
 
 <template>
   <section class="card">
-    <h2>{{ book ? 'Edit book' : 'Add new book' }}</h2>
+    <h2>{{ book ? "Edit book" : "Add new book" }}</h2>
 
     <form @submit.prevent="submit">
       <div class="form-group">
@@ -34,14 +34,9 @@ function submit() {
       </div>
 
       <button type="submit" class="btn btn-primary">
-        {{ book ? 'Save changes' : 'Create book' }}
+        {{ book ? "Save changes" : "Create book" }}
       </button>
-      <button
-        v-if="book"
-        type="button"
-        class="btn btn-default"
-        @click="emit('cancel')"
-      >
+      <button type="button" class="btn btn-default" @click="emit('cancel')">
         Cancel
       </button>
     </form>

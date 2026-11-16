@@ -1,5 +1,6 @@
 <script setup>
 import { ref, computed } from 'vue'
+import { Search } from 'lucide-vue-next'
 import BookItem from './BookItem.vue'
 
 const props = defineProps({
@@ -19,44 +20,35 @@ const filteredBooks = computed(() => {
 
 <template>
   <section>
-    <div class="filters">
-      <div class="form-group">
-        <label for="search">Search by title</label>
-        <input
-          id="search"
-          v-model="searchKey"
-          class="form-control"
-          placeholder="Type to filter the list"
-          autocomplete="off"
-        />
-      </div>
+    <div class="search">
+      <Search class="search-icon" :size="16" aria-hidden="true" />
+      <label for="search" class="sr-only">Search by title</label>
+      <input
+        id="search"
+        v-model="searchKey"
+        class="search-input"
+        placeholder="Search by title..."
+        autocomplete="off"
+      />
     </div>
 
-    <table v-if="filteredBooks.length" class="table">
-      <thead>
-        <tr>
-          <th>Title</th>
-          <th>Status</th>
-          <th class="col-actions">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <BookItem
-          v-for="book in filteredBooks"
-          :key="book.id"
-          :book="book"
-          @edit="$emit('edit', $event)"
-          @delete="$emit('delete', $event)"
-          @sold="$emit('sold', $event)"
-          @available="$emit('available', $event)"
-        />
-      </tbody>
-    </table>
+    <ul v-if="filteredBooks.length" class="shelf">
+      <BookItem
+        v-for="book in filteredBooks"
+        :key="book.id"
+        :book="book"
+        :number="books.indexOf(book) + 1"
+        @edit="$emit('edit', $event)"
+        @delete="$emit('delete', $event)"
+        @sold="$emit('sold', $event)"
+        @available="$emit('available', $event)"
+      />
+    </ul>
 
     <p v-else class="empty">
       {{
         books.length === 0
-          ? 'No books yet. Add your first book above.'
+          ? 'No books yet. Add your first book to start the shelf.'
           : 'No books match your search.'
       }}
     </p>

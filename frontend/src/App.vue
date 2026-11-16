@@ -1,5 +1,7 @@
+
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, computed, onMounted } from "vue";
+import { Plus } from "lucide-vue-next";
 import {
   getBooks,
   createBook,
@@ -20,6 +22,14 @@ const loading = ref(true);
 const formKey = ref(0);
 
 const NETWORK_ERROR = "Could not reach the API. Check that it is running.";
+
+const subtitle = computed(() => {
+  const total = books.value.length;
+  if (total === 0) return "The shelf is empty.";
+  const available = books.value.filter((b) => !b.isSold).length;
+  const volumes = total === 1 ? "volume" : "volumes";
+  return `${total} ${volumes} on the shelf, ${available} still looking for a reader.`;
+});
 
 async function loadBooks() {
   try {
@@ -93,7 +103,7 @@ async function handleSave(title) {
 }
 
 async function handleAvailable(id) {
-  await runAction(() => markBookAvailable(id), 'Could not mark the book as available.')
+  await runAction(() => markBookAvailable(id), "Could not mark the book as available.");
 }
 
 async function runAction(action, failMessage) {
@@ -126,10 +136,14 @@ onMounted(loadBooks);
 <template>
   <div class="container">
     <header class="page-header">
-      <div class="branding">
-        <h1>Book List</h1>
+      <div class="heading">
+        <p class="eyebrow">Find · Your · Book</p>
+        <h1>Book <em>Shelf</em></h1>
+        <p v-if="!loading" class="subtitle">{{ subtitle }}</p>
       </div>
-      <button v-if="!showForm" class="btn btn-primary" @click="openAdd">
+
+      <button v-if="!showForm" class="btn btn-primary add-btn" @click="openAdd">
+        <Plus :size="15" aria-hidden="true" />
         Add book
       </button>
     </header>
