@@ -104,4 +104,15 @@ public class BooksController : ControllerBase
 
     }
 
+    [HttpPatch("{id}/available")]
+    public async Task<IActionResult> MarkAsAvailable(int id)
+    {
+        var book = await _context.Books.FindAsync(id);
+        if (book == null)
+            return NotFound();
+
+        book.IsSold = false;
+        await _context.SaveChangesAsync();
+        return NoContent();
+    }
 }
