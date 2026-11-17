@@ -6,12 +6,18 @@ const props = defineProps({
   book: { type: Object, default: null },
 });
 
-const emit = defineEmits(['save', 'cancel']);
+const emit = defineEmits(["save", "cancel"]);
 
 const title = ref(props.book ? props.book.title : "");
+const author = ref(props.book ? props.book.author : "");
+const price = ref(props.book ? props.book.price : 0);
 
 function submit() {
-  emit("save", title.value.trim());
+  emit("save", {
+    title: title.value.trim(),
+    author: author.value.trim(),
+    price: Number(price.value) || 0,
+  });
 }
 </script>
 
@@ -31,6 +37,30 @@ function submit() {
           autocomplete="off"
         />
         <small class="hint">{{ title.length }} / 100 characters</small>
+      </div>
+      <div class="form-group">
+        <label for="book-author">Author</label>
+        <input
+          id="book-author"
+          v-model="author"
+          class="form-control"
+          maxlength="100"
+          placeholder="Enter author"
+          autocomplete="off"
+        />
+        <small class="hint">{{ author.length }} / 100 characters</small>
+      </div>
+
+      <div class="form-group">
+        <label for="book-price">Price (€)</label>
+        <input
+          id="book-price"
+          v-model="price"
+          type="number"
+          min="0"
+          step="0.01"
+          class="form-control"
+        />
       </div>
 
       <button type="submit" class="btn btn-primary">

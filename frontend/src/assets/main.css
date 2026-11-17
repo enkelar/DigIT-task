@@ -260,14 +260,6 @@ h2 {
   color: var(--green);
 }
 
-.status-available::before {
-  content: '';
-  width: 6px;
-  height: 6px;
-  background: var(--green);
-  border-radius: 50%;
-}
-
 .status-sold {
   color: var(--muted);
 }
@@ -279,6 +271,20 @@ h2 {
   gap: 4px;
 }
 
+.author {
+  margin: 2px 0 0;
+  font-family: var(--serif);
+  font-size: 14px;
+  font-style: italic;
+  color: var(--muted);
+}
+
+.price {
+  margin-right: 8px;
+  font-family: var(--serif);
+  font-size: 15px;
+  white-space: nowrap;
+}
 .icon-btn {
   display: inline-flex;
   align-items: center;

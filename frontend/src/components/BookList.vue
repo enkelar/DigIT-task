@@ -14,7 +14,9 @@ const searchKey = ref('')
 // Search runs in the browser, on the books we already have
 const filteredBooks = computed(() => {
   const key = searchKey.value.trim().toLowerCase()
-  return props.books.filter((b) => b.title.toLowerCase().includes(key))
+  return props.books.filter(
+    (b) => b.title.toLowerCase().includes(key) || b.author.toLowerCase().includes(key)
+  )
 })
 </script>
 
@@ -22,12 +24,12 @@ const filteredBooks = computed(() => {
   <section>
     <div class="search">
       <Search class="search-icon" :size="16" aria-hidden="true" />
-      <label for="search" class="sr-only">Search by title</label>
+      <label for="search" class="sr-only">Search by title or author</label>
       <input
         id="search"
         v-model="searchKey"
         class="search-input"
-        placeholder="Search by title..."
+        placeholder="Search by title or author..."
         autocomplete="off"
       />
     </div>
@@ -48,8 +50,8 @@ const filteredBooks = computed(() => {
     <p v-else class="empty">
       {{
         books.length === 0
-          ? 'No books yet. Add your first book to start the shelf.'
-          : 'No books match your search.'
+          ? "No books yet. Add your first book to start the shelf."
+          : "No books match your search."
       }}
     </p>
   </section>

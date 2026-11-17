@@ -9,5 +9,11 @@ public class AppDbContext : DbContext
     {
     }
 
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+    modelBuilder.Entity<Book>()
+        .HasIndex(b => new { b.Title, b.Author })
+        .IsUnique();
+}
     public DbSet<Book> Books { get; set; }
 }

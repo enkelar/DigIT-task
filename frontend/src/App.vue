@@ -1,4 +1,3 @@
-
 <script setup>
 import { ref, computed, onMounted } from "vue";
 import { Plus } from "lucide-vue-next";
@@ -14,8 +13,8 @@ import BookForm from "./components/BookForm.vue";
 import BookList from "./components/BookList.vue";
 
 const books = ref([]);
-const editingBook = ref(null); 
-const showForm = ref(false); 
+const editingBook = ref(null);
+const showForm = ref(false);
 const error = ref("");
 const loading = ref(true);
 
@@ -62,11 +61,11 @@ function startEdit(book) {
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-async function handleSave(title) {
+async function handleSave(data) {
   error.value = "";
 
-  if (!title) {
-    error.value = "Title is required.";
+  if (!data.title || !data.author) {
+    error.value = "Title and author are required.";
     return;
   }
 
@@ -78,18 +77,21 @@ async function handleSave(title) {
       const current = books.value.find((b) => b.id === editing.id);
       response = await updateBook({
         id: editing.id,
-        title,
+        ...data,
         isSold: current ? current.isSold : editing.isSold,
       });
     } else {
-      response = await createBook({ title, isSold: false });
+      response = await createBook({ ...data, isSold: false });
     }
 
     if (response.ok) {
       resetForm();
       await loadBooks();
     } else if (response.status === 400) {
-      error.value = "Title is required and must be 100 characters or less.";
+      error.value =
+        "Title and author are required and must be 100 characters or less.";
+    } else if (response.status === 409) {
+      error.value = "A book with this title and author already exists.";
     } else if (response.status === 404) {
       error.value = "This book no longer exists.";
       resetForm();
@@ -103,7 +105,10 @@ async function handleSave(title) {
 }
 
 async function handleAvailable(id) {
-  await runAction(() => markBookAvailable(id), "Could not mark the book as available.");
+  await runAction(
+    () => markBookAvailable(id),
+    "Could not mark the book as available.",
+  );
 }
 
 async function runAction(action, failMessage) {
@@ -137,7 +142,6 @@ onMounted(loadBooks);
   <div class="container">
     <header class="page-header">
       <div class="heading">
-        <p class="eyebrow">Find · Your · Book</p>
         <h1>Book <em>Shelf</em></h1>
         <p v-if="!loading" class="subtitle">{{ subtitle }}</p>
       </div>

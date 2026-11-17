@@ -19,16 +19,16 @@ const paddedNumber = computed(() => String(props.number).padStart(2, '0'))
 <template>
   <li class="book-card" :class="{ sold: book.isSold }">
     <span class="spine" :style="{ background: spineColor }" aria-hidden="true"></span>
-    <span class="number" aria-hidden="true">{{ paddedNumber }}</span>
-
     <div class="info">
       <h3 class="title">{{ book.title }}</h3>
+      <p class="author">by {{ book.author }}</p>
       <span class="status" :class="book.isSold ? 'status-sold' : 'status-available'">
         {{ book.isSold ? 'Sold' : 'Available' }}
       </span>
     </div>
 
     <div class="actions">
+      <span class="price">{{ Number(book.price).toFixed(2) }} €</span>
       <button
         class="icon-btn"
         data-tooltip="Edit book"

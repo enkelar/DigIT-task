@@ -40,6 +40,8 @@ public class BooksController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<Book>> Create(Book book)
     {
+        if (await _context.Books.AnyAsync(b => b.Title == book.Title && b.Author == book.Author))
+            return Conflict("A book with this title and author already exists.");
         _context.Books.Add(book);
         await _context.SaveChangesAsync();
 
@@ -52,6 +54,9 @@ public class BooksController : ControllerBase
     {
         if (id != book.Id)
             return BadRequest();
+
+        if (await _context.Books.AnyAsync(b => b.Title == book.Title && b.Author == book.Author && b.Id != id))
+            return Conflict("A book with this title and author already exists.");
 
         _context.Entry(book).State = EntityState.Modified;
 
