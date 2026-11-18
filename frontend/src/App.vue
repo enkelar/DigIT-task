@@ -17,7 +17,7 @@ const editingBook = ref(null);
 const showForm = ref(false);
 const error = ref("");
 const loading = ref(true);
-
+const loadFailed = ref(false);
 const formKey = ref(0);
 
 const NETWORK_ERROR = "Could not reach the API. Check that it is running.";
@@ -33,8 +33,10 @@ const subtitle = computed(() => {
 async function loadBooks() {
   try {
     books.value = await getBooks();
+    loadFailed.value = false;
   } catch {
     error.value = "Could not load books. Check that the API is running.";
+    loadFailed.value = true;
   } finally {
     loading.value = false;
   }
@@ -65,7 +67,7 @@ async function handleSave(data) {
   error.value = "";
 
   if (!data.title || !data.author) {
-    error.value = "Title and author are required.";
+    error.value = "Title and author are required. Price must be between 0 and 99999.99.";
     return;
   }
 
@@ -165,7 +167,7 @@ onMounted(loadBooks);
 
       <p v-if="loading" class="empty">Loading books...</p>
       <BookList
-        v-else
+        v-else-if="books.length > 0 || !loadFailed"
         :books="books"
         @edit="startEdit"
         @delete="handleDelete"

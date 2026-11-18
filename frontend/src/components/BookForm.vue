@@ -58,6 +58,7 @@ function submit() {
           v-model="price"
           type="number"
           min="0"
+          max="99999.99"
           step="0.01"
           class="form-control"
         />
