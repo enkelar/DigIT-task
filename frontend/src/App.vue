@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed, onMounted } from "vue";
-import { Plus } from "lucide-vue-next";
+import { Plus, Book } from "lucide-vue-next";
 import {
   getBooks,
   createBook,
@@ -142,7 +142,7 @@ onMounted(loadBooks);
   <div class="container">
     <header class="page-header">
       <div class="heading">
-        <h1>Book <em>Shelf</em></h1>
+        <h1><Book :size="40" aria-hidden="true"/>Book <em>Shelf</em></h1>
         <p v-if="!loading" class="subtitle">{{ subtitle }}</p>
       </div>
 
