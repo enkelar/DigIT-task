@@ -13,7 +13,6 @@ defineEmits(['edit', 'delete', 'sold', 'available'])
 const SPINES = ['#25503a', '#233f6a', '#7a2e2e', '#5a3a6b', '#8a5a1f', '#2f5d62']
 
 const spineColor = computed(() => SPINES[(props.number - 1) % SPINES.length])
-const paddedNumber = computed(() => String(props.number).padStart(2, '0'))
 </script>
 
 <template>

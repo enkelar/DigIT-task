@@ -217,15 +217,6 @@ h2 {
   border-radius: 1px;
 }
 
-.number {
-  flex-shrink: 0;
-  width: 22px;
-  font-family: var(--serif);
-  font-size: 14px;
-  font-style: italic;
-  color: var(--muted);
-}
-
 .info {
   flex: 1;
   min-width: 0;
