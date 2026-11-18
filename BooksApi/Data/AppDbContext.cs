@@ -8,12 +8,12 @@ public class AppDbContext : DbContext
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {
     }
+  public DbSet<Book> Books { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
-{
-    modelBuilder.Entity<Book>()
-        .HasIndex(b => new { b.Title, b.Author })
-        .IsUnique();
-}
-    public DbSet<Book> Books { get; set; }
+    {
+        modelBuilder.Entity<Book>()
+            .HasIndex(b => new { b.Title, b.Author })
+            .IsUnique();
+    }
 }

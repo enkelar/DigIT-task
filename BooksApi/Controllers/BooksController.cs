@@ -97,7 +97,7 @@ public class BooksController : ControllerBase
     // PATCH: api/books/{id}/sold
     [HttpPatch("{id}/sold")]
 
-    public async Task<ActionResult> MarkAsSold(int id)
+    public async Task<IActionResult> MarkAsSold(int id)
     {
         var book = await _context.Books.FindAsync(id);
         if (book == null)
