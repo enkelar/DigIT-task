@@ -43,7 +43,15 @@ public class BooksController : ControllerBase
         if (await _context.Books.AnyAsync(b => b.Title == book.Title && b.Author == book.Author))
             return Conflict("A book with this title and author already exists.");
         _context.Books.Add(book);
-        await _context.SaveChangesAsync();
+
+        try
+        {
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateException)
+        {
+            return Conflict("A book with this title and author already exists.");
+        }
 
         return CreatedAtAction(nameof(GetById), new { id = book.Id }, book);
     }
@@ -70,6 +78,10 @@ public class BooksController : ControllerBase
                 return NotFound();
             else
                 throw;
+        }
+        catch (DbUpdateException)
+        {
+            return Conflict("A book with this title and author already exists.");
         }
 
         return NoContent();
